@@ -392,28 +392,500 @@ print(len("I am using a built-in function")) # len 是一个内建函数
 
 Data Types
 
-- **基本数据类型**
-- **Python**:
-  - 数值：int, float, complex
-  - 字符串：str
-  - 布尔值：bool (True, False)
-- **Go**:
-  - 数值：int, int8, int16, int32, int64, uint, uint8 (byte), uint16, uint32, uint64, uintptr, float32, float64, complex64, complex128
-  - 字符串：string
-  - 布尔值：bool (true, false)
-- **JavaScript**:
-  - 数值：Number (包括整数和浮点数)
-  - 字符串：String
-  - 布尔值：Boolean (true, false)
-  - Undefined 和 Null 类型
-- **复合数据类型**
-  - **Python**: list, tuple, set, dict
-  - **Go**: array, slice, struct, map, channel, interface
-  - **JavaScript**: Array, Object, Set, Map, WeakSet, WeakMap, Date
-- **特殊数据类型**
-  - **Python**: NoneType (None)
-  - **Go**: 函数类型, 指针类型, 接口类型
-  - **JavaScript**: Function, Symbol, BigInt
+- 不可变数据类型（如整数、浮点数、字符串、元组、布尔值），"Static value" 这个术语可能被理解为指数据的实际值，即直接存储数据本身而非其引用或地址。
+  1、当数据按值传递时，实际上传递的是数据的副本。
+  2、在函数中修改这种类型的参数不会影响原始数据。
+
+  表现得像是按值复制，但实际上是因为不可变对象在被修改时会创建新的对象。
+  当一个不可变对象被赋值给新变量时，新变量引用原始对象。如果原始对象发生变化（实际上是创建了一个新对象），新变量仍然引用原始对象。
+
+  ```py
+  x = 10
+  y = x
+  x = x + 1  # x 现在指向新的对象 11，而 y 仍然指向原始对象 10
+
+  ```
+
+- 可变数据类型（如列表、字典、集合），"Reference value" 指的是数据的引用或地址，而不是数据本身
+  1、数据以引用的形式传递，这意味着传递的是对原始数据的直接引用。
+  2、在函数中修改这种类型的参数可能会影响到原始数据。
+
+  表现得像是按引用复制。
+  当将一个可变对象赋值给新变量时，新变量实际上引用同一个对象（内存地址）。对该对象的任何修改都会反映在所有引用它的变量上。
+
+  ```py
+  a = [1, 2, 3]
+  b = a
+  a.append(4)  # 修改 a，b 也会看到这个变化，因为它们引用同一个列表
+
+  ```
+
+**基本数据类型**
+
+整数 Integers
+当使用数值类型（整数、浮点数）时，注意数值范围和精度。
+
+Python 3: 整数没有固定的大小限制（除了内存限制）。
+Python 2: 有两种整数类型：int 和 long。在 Python 2.7 中，int 的大小通常是 32 位或 64 位，这取决于系统，但如果整数太大，它会自动转换为 long 类型，这是无限精度的。
+
+- 类型: int
+- 描述: 表示整数，没有小数部分。
+- 使用场景: 用于计数、索引、数学运算等。
+- 注意事项: Python 的整数可以是任意大小，只受限于可用内存。
+
+```py
+  count = 10
+  index = 3
+
+  # 例子：学生分数管理系统
+  # 在一个学生分数管理系统中，你需要存储学生的考试分数。这些分数是没有小数的整数。
+  math_score = 85
+  physics_score = 90
+
+```
+
+**常见操作**
+算术运算: 加（+）、减（-）、乘（\*）、除（/）、整除（//）、余数（%）、幂（\*\*）。
+注意：整数除法（/）总是返回浮点数；使用整除（//）返回整数结果。
+
+```py
+  a = 10
+  b = 3
+  sum = a + b  # 13
+  difference = a - b  # 7
+  product = a * b  # 30
+  quotient = a / b  # 3.3333...
+  floor_division = a // b  # 3
+  remainder = a % b  # 1
+  power = a ** b  # 1000
+
+```
+
+比较操作: 等于（==）、不等于（!=）、大于（>）、小于（<）、大于等于（>=）、小于等于（<=）。
+注意：比较操作返回布尔值（True 或 False）。
+
+```py
+  a = 10
+  b = 5
+  a == b  # False
+  a != b  # True
+  a > b   # True
+  a < b   # False
+
+```
+
+浮点数（Floating Point Numbers）
+当使用数值类型（整数、浮点数）时，注意数值范围和精度。
+
+Python 中的浮点数通常遵循 IEEE 754 双精度标准，这意味着它们使用 64 位来存储。这包括 1 位符号位、11 位指数位和 52 位尾数位。
+
+- 类型: float
+- 描述: 表示带有小数部分的数值。
+- 使用场景: 用于需要小数的数学运算、科学计算等。
+- 注意事项: 浮点数的精度有限，可能会有舍入误差。
+
+```py
+  price = 99.99
+  temperature = 36.6
+
+  # 例子：科学计算应用
+  # 在进行科学计算时，比如计算物理实验的结果，你可能需要使用带有小数的精确值。
+  gravity = 9.81  # 地球表面的重力加速度
+  boiling_point = 100.0  # 水的沸点
+
+```
+
+**常见操作**
+算术运算: 与整数类似，适用于浮点数。
+注意：浮点数运算可能有精度问题。
+
+```py
+  a = 5.5
+  b = 2.0
+  sum = a + b  # 7.5
+  product = a * b  # 11.0
+
+```
+
+四舍五入: 使用 round()函数。
+注意：round()可以指定小数点后保留的位数。
+
+```py
+  round(3.1415926)  # 3
+  round(3.1415926, 2)  # 3.14
+
+```
+
+向下取整（Floor）、向上取整（Ceil）
+
+```py
+  import math
+
+  number = 3.7
+  floored_number = math.floor(number)  # 结果为 3
+
+  number = 3.2
+  ceiled_number = math.ceil(number)  # 结果为 4
+
+```
+
+字符串（Strings）
+字符串是不可变的，意味着字符串方法返回的是新的字符串对象。
+
+在 Python 中，字符串（str 类型）的长度仅受限于系统的内存。理论上，你可以创建非常长的字符串，只要你的计算机内存允许。
+
+- 类型: str
+- 描述: 表示文本或字符序列。
+- 使用场景: 用于存储和处理文本数据，如名称、描述等。
+- 注意事项: 字符串是不可变的，任何修改都会创建新的字符串对象。
+
+```py
+  name = "Alice"
+  message = "Hello, World!"
+
+  # 例子：在线论坛系统
+  # 在在线论坛系统中，用户发表的帖子需要用文本形式存储。
+  post_title = "Python基本数据类型"
+  post_content = "让我们讨论Python中的基本数据类型和它们的应用场景..."
+
+```
+
+**常见操作**
+
+连接: 使用加号（+）连接字符串。
+注意：只能将字符串与字符串连接，与其他类型连接前需转换。
+
+```py
+  greeting = "Hello, " + "World!"  # "Hello, World!"
+```
+
+索引和切片: 访问字符串中的特定字符或子串。
+注意：字符串索引从 0 开始；切片使用[start:end]语法。
+
+```py
+  text = "Python"
+  first_letter = text[0]  # 'P'
+  slice = text[1:4]  # 'yth'
+
+```
+
+格式化: 使用.format()或 f-string 格式化字符串。
+注意：f-string 是 Python 3.6+的功能。
+
+```py
+  name = "Alice"
+  formatted_string = f"Hello, {name}!"  # "Hello, Alice!"
+```
+
+常见字符串方法: upper(), lower(), strip(), split(), replace(), find().
+注意：字符串方法返回新字符串，原字符串不变。
+
+```py
+  text = " Hello, World! "
+  text_upper = text.upper()  # " HELLO, WORLD! "
+  text_stripped = text.strip()  # "Hello, World!"
+
+```
+
+布尔值（Booleans）
+布尔值在逻辑判断和控制流中非常重要。
+
+- 类型: bool
+- 描述: 表示逻辑值 True 或 False。
+- 使用场景: 用于条件判断、逻辑运算等。
+- 注意事项: 常与控制流语句（if, while 等）一起使用。
+
+```py
+  is_active = True
+  has_passed = False
+
+  # 例子：用户权限控制
+  # 在软件系统中，根据用户是否拥有管理员权限，允许或禁止他们访问特定的功能。
+  isAdmin = False
+  if isAdmin:
+      print("显示管理员设置")
+  else:
+      print("访问被拒绝")
+
+```
+
+**常见操作**
+
+逻辑运算: and, or, not。
+注意：and 和 or 遵循短路逻辑。
+
+```py
+  true_condition = True
+  false_condition = False
+  result = true_condition and false_condition  # False
+
+```
+
+与其他类型的转换: 通常非零数值、非空字符串等被视为 True。
+注意：0, 0.0, "", None, 空容器等被视为 False。
+
+```py
+  bool(1)  # True
+  bool(0)  # False
+  bool(3.14)  # True
+  bool("")  # False
+  bool("Hello")  # True
+  bool([])  # False
+  bool([1, 2, 3])  # True
+
+```
+
+列表（Lists）
+列表、集合、字典是可变的，它们的内容可以在原地被修改。
+
+- 类型: list
+- 描述: 表示有序的元素集合，元素可以是不同类型。
+- 使用场景: 用于存储一系列的项目，如元素集合、数据序列等。
+- 注意事项: 列表是可变的，可以添加、删除或更改元素。
+
+```py
+  numbers = [1, 2, 3, 4, 5]
+  mixed_data = ["text", 10, 3.14]
+
+  # 例子：购物车功能
+  # 假设你正在构建一个在线购物平台，需要一个动态的购物车来存储用户选择的商品。因为购物车中的商品数量会根据用户的添加和删除操作变化，所以需要一个可以修改的数据结构。
+  shopping_cart = ["苹果", "香蕉", "牛奶"]
+  shopping_cart.append("面包")  # 添加商品
+  shopping_cart.remove("香蕉")  # 删除商品
+
+```
+
+**常见操作**
+
+添加元素:
+使用 append() 在列表末尾添加元素。
+使用 insert() 在指定位置插入元素。
+注意：这些操作会修改原列表。
+
+```py
+  my_list = [1, 2, 3]
+  my_list.append(4)  # [1, 2, 3, 4]
+  my_list.insert(1, 'a')  # [1, 'a', 2, 3, 4]
+
+```
+
+删除元素:
+使用 remove() 删除第一个匹配的元素。
+使用 pop() 删除并返回指定位置的元素。
+注意：如果元素不存在，remove() 会引发错误。
+
+```py
+my_list.remove('a')  # [1, 2, 3, 4]
+popped_element = my_list.pop(2)  # my_list 为 [1, 2, 4], popped_element 为 3
+
+```
+
+切片和索引:
+通过索引访问、切片和修改元素。
+注意：索引超出范围会引发错误。
+
+```py
+element = my_list[0]  # 1
+sub_list = my_list[1:3]  # [2, 4]
+
+```
+
+元组（Tuples）
+元组是不可变的，适合用于表示不应该改变的数据集。
+
+- 类型: tuple
+- 描述: 类似于列表，但是不可变。
+- 使用场景: 用于存储不应该改变的数据，如函数返回多个值。
+- 注意事项: 一旦创建，元素不能更改。
+
+```py
+  dimensions = (1920, 1080)
+  coordinates = (0, 0)
+
+  # 例子：返回多个值
+  # 假设你正在构建一个游戏，需要一个函数来返回玩家的坐标和分数。因为这些值是相关联的，所以最好将它们组合成一个元组，而不是分别返回。
+  def get_player_info():
+    x = 0
+    y = 0
+    score = 0
+    return (x, y, score)
+
+  # 例子：地理坐标系统
+  # 在一个地图应用中，你需要存储地理位置的坐标。这些坐标一旦设定，就不应该更改。
+  location = (40.7128, -74.0060)  # 纽约市的坐标
+  # location[0] = 41.2033  # 这将引发错误，因为元组是不可变的
+
+```
+
+**常见操作**
+
+访问元素:
+通过索引访问元素。
+注意：元组是不可变的，不能修改元素。
+
+```py
+my_tuple = (1, 2, 3)
+element = my_tuple[0]  # 1
+
+```
+
+拼接和重复:
+使用 + 拼接元组。
+使用 \* 重复元组。
+注意：这会创建新的元组。
+
+```py
+new_tuple = my_tuple + (4, 5)  # (1, 2, 3, 4, 5)
+repeated_tuple = my_tuple * 2  # (1, 2, 3, 1, 2, 3)
+
+
+```
+
+集合（Sets）
+列表、集合、字典是可变的，它们的内容可以在原地被修改。
+
+- 类型: set
+- 描述: 表示无序且不重复的元素集合。
+- 使用场景: 用于去重、集合运算（并集、交集、差集）。
+- 注意事项: 集合中的元素必须是不可变的（如数字、字符串）。
+
+```py
+  unique_numbers = {1, 2, 3, 4, 5}
+
+  # 例子：邮箱地址簿
+  # 假设你正在处理一个邮箱应用，需要存储用户的联系人地址。为了确保地址列表中没有重复，你需要一个可以自动去除重复项的数据结构。
+  email_addresses = {"alice@example.com", "bob@example.com"}
+  email_addresses.add("alice@example.com")  # 添加重复项，不会有变化
+
+```
+
+**常见操作**
+
+添加和删除元素:
+使用 add() 添加元素。
+使用 remove() 或 discard() 删除元素。
+注意：remove() 不存在的元素会引发错误，discard() 不会。
+
+```py
+my_set = {1, 2, 3}
+my_set.add(4)  # {1, 2, 3, 4}
+my_set.discard(2)  # {1, 3, 4}
+
+
+```
+
+集合运算:
+使用 union(), intersection(), difference() 等方法进行集合运算。
+注意：这些操作不会改变原集合，而是返回一个新集合。
+
+```py
+another_set = {3, 4, 5}
+union_set = my_set.union(another_set)  # {1, 2, 3, 4, 5}
+intersection_set = my_set.intersection(another_set)  # {3, 4}
+
+```
+
+字典（Dictionaries）
+列表、集合、字典是可变的，它们的内容可以在原地被修改。
+
+- 类型: dict
+- 描述: 键值对的集合，每个键映射到一个值。
+- 使用场景: 用于存储相关联的信息，如数据库记录、键值存储等。
+- 注意事项: 键必须是不可变的类型，且唯一。
+
+```py
+  person = {"name": "Alice", "age": 25, "city": "New York"}
+
+  # 例子：用户资料管理
+  # 在用户管理系统中，你需要存储每个用户的多个信息，如姓名、年龄和电子邮件地址。这些信息需要以键值对的形式存储，以便快速访问和更新。
+  user_profile = {"name": "Alice", "age": 30, "email": "alice@example.com"}
+  user_profile["age"] = 31  # 更新年龄
+
+```
+
+**常见操作**
+
+添加和修改键值对:
+直接通过键来添加或修改值。
+注意：键必须是不可变类型。
+
+```py
+my_dict = {'a': 1, 'b': 2}
+my_dict['c'] = 3  # {'a': 1, 'b': 2, 'c': 3}
+my_dict['a'] = 'one'  # {'a': 'one', 'b': 2, 'c': 3}
+
+```
+
+删除键值对:
+使用 pop() 删除特定键的元素。
+使用 del 关键字删除元素。
+注意：删除不存在的键会引发错误。
+
+```py
+value = my_dict.pop('b')  # {'a': 'one', 'c': 3}, value 为 2
+del my_dict['c']  # {'a': 'one'}
+
+```
+
+访问和遍历:
+使用 keys(), values(), items() 遍历字典。
+注意：这些方法返回的是视图对象。
+
+```py
+keys = my_dict.keys()  # dict_keys(['a'])
+for key, value in my_dict.items():
+    print(key, value)  # 输出 'a one'
+
+```
+
+truthy values vs falsy values
+
+Falsy Values（假值）
+在 Python 中，以下值被视为 falsy，即它们在布尔上下文中被评估为 False：
+
+- 布尔值 False。
+- 任何数值类型的零：0, 0.0, 0j（复数）。
+- 空的序列和集合：''（空字符串），()（空元组），[]（空列表），{}（空字典），set()（空集合）。
+- 特殊对象 None。
+
+Truthy Values（真值）
+相对地，除了上述 falsy values 之外，几乎所有其他值都被视为 truthy，即它们在布尔上下文中被评估为 True。
+
+```py
+  if not 0:
+      print("0 is falsy")  # 这将被打印
+
+  if "hello":
+      print("Non-empty string is truthy")  # 这将被打印
+
+  if []:
+      print("This won't print")  # 空列表是 falsy
+
+  if [1, 2, 3]:
+      print("Non-empty list is truthy")  # 这将被打印
+```
+
+深拷贝和浅拷贝
+在处理复杂的可变对象时（如列表或字典中包含列表），需要了解深拷贝（deep copy）和浅拷贝（shallow copy）的概念。
+
+浅拷贝（Shallow Copy）：创建一个新对象，但它包含的是对原始对象内部元素的引用（如果元素是可变对象）。
+
+```py
+import copy
+original = [[1, 2, 3], [4, 5, 6]]
+shallow = copy.copy(original)
+original[0].append(4)  # 修改 original，shallow 也会看到这个变化
+
+```
+
+深拷贝（Deep Copy）：创建一个新对象，同时递归地拷贝原始对象内部的所有元素（不论它们是否可变）。
+
+```py
+deep = copy.deepcopy(original)
+original[0].append(5)  # 修改 original，deep 不会看到这个变化
+
+
+```
 
 Operators
 
@@ -553,3 +1025,7 @@ Abstraction
 是一个在函数式编程中常见的概念，它指的是将一个多参数的函数转换成多个单参数（或较少参数）的函数的过程。这样做的目的是为了减少函数调用所需的参数数量，通过固定一些参数来创建一个新的函数。
 
 代码组织
+
+```
+
+```
