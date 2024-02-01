@@ -200,10 +200,27 @@ Youtube 视频：[How Python code is executed !!](https://www.youtube.com/watch?
 
 ## 基本数据类型
 
+基本数据类型，如整数（int）、浮点数（float）、字符串（str）和布尔值（bool），赋值操作会创建数据的副本，而不是引用。这些类型在 Python 中是不可变的（**immutable**），意味着它们的值一旦创建就不能改变。
+
 当使用数值类型（整数、浮点数）时，注意数值范围和精度。
 
 - Python 3: 整数没有固定的大小限制（除了内存限制）。
 - Python 2: 有两种整数类型：int 和 long。在 Python 2.7 中，int 的大小通常是 32 位或 64 位，这取决于系统，但如果整数太大，它会自动转换为 long 类型，这是无限精度的。
+
+**当你将一个基本数据类型的变量赋值给另一个变量时，Python 实际上会在内存中创建一个新的副本。因此，两个变量虽然可能包含相同的值，但它们指向内存中的不同位置。这意味着如果你改变一个变量的值，它不会影响另一个变量。**
+
+```py
+    a = 10
+    b = a
+
+    print(a)  # 10
+    print(b)  # 10
+
+    a = 20
+
+    print(a)  # 20
+    print(b)  # 10
+```
 
 ### 整数 Integers
 
@@ -382,9 +399,16 @@ Python 中的浮点数通常遵循 IEEE 754 双精度标准，这意味着它们
 
     # split() 将字符串拆分为子串
     words = text.split(",")  # [" Hello", " World! "]
+
+    # replace() 替换字符串中的子串，replace() 会替换所有匹配的子字符串
+    new_text = text.replace("World", "Python")  # " Hello, Python! "
+
+    # find() 查找子串在字符串中的位置，如果找不到，返回 -1
+    position = text.find("World")  # 8
 ```
 
-布尔值（Booleans）
+### 布尔值（Booleans）
+
 布尔值在逻辑判断和控制流中非常重要。
 
 - 类型: bool
@@ -393,482 +417,687 @@ Python 中的浮点数通常遵循 IEEE 754 双精度标准，这意味着它们
 - 注意事项: 常与控制流语句（if, while 等）一起使用。
 
 ```py
-  is_active = True
-  has_passed = False
+    is_active = True
+    has_passed = False
 
-  # 例子：用户权限控制
-  # 在软件系统中，根据用户是否拥有管理员权限，允许或禁止他们访问特定的功能。
-  isAdmin = False
-  if isAdmin:
-      print("显示管理员设置")
-  else:
-      print("访问被拒绝")
+    # 在软件系统中，根据用户是否拥有管理员权限，允许或禁止他们访问特定的功能。
+    isAdmin = False
+    if isAdmin:
+        print("显示管理员设置")
+    else:
+        print("访问被拒绝")
 
 ```
 
-**常见操作**
+#### 常见操作
 
-逻辑运算: and, or, not。
-注意：and 和 or 遵循短路逻辑。
+**逻辑运算：** `and`, `or`, `not`。
+
+注意：`and` 和 `or` 遵循短路逻辑。
 
 ```py
-  true_condition = True
-  false_condition = False
-  result = true_condition and false_condition  # False
+    true_condition = True
+    false_condition = False
 
+    # and 逻辑与，只有当所有条件都为 True 时，结果才为 True
+    result = true_condition and false_condition  # False
+
+    # or 逻辑或，只要有一个条件为 True，结果就为 True，如果第一个条件为 True，第二个条件将不会被执行
+    result = true_condition or false_condition  # True
+
+    # not 逻辑非，将 True 变为 False，将 False 变为 True
+    result = not true_condition  # False
 ```
 
-与其他类型的转换: 通常非零数值、非空字符串等被视为 True。
+**与其他类型的转换：** 通常非零数值、非空字符串等被视为 True。
+
 注意：0, 0.0, "", None, 空容器等被视为 False。
 
-```py
-  bool(1)  # True
-  bool(0)  # False
-  bool(3.14)  # True
-  bool("")  # False
-  bool("Hello")  # True
-  bool([])  # False
-  bool([1, 2, 3])  # True
+#### `Truthy` values vs `Falsy` values
 
-```
-
-列表（Lists）
-列表、集合、字典是可变的，它们的内容可以在原地被修改。
-
-- 类型: list
-- 描述: 表示有序的元素集合，元素可以是不同类型。
-- 使用场景: 用于存储一系列的项目，如元素集合、数据序列等。
-- 注意事项: 列表是可变的，可以添加、删除或更改元素。
-
-```py
-  numbers = [1, 2, 3, 4, 5]
-  mixed_data = ["text", 10, 3.14]
-
-  # 例子：购物车功能
-  # 假设你正在构建一个在线购物平台，需要一个动态的购物车来存储用户选择的商品。因为购物车中的商品数量会根据用户的添加和删除操作变化，所以需要一个可以修改的数据结构。
-  shopping_cart = ["苹果", "香蕉", "牛奶"]
-  shopping_cart.append("面包")  # 添加商品
-  shopping_cart.remove("香蕉")  # 删除商品
-
-```
-
-**常见操作**
-
-添加元素:
-使用 append() 在列表末尾添加元素。
-使用 insert() 在指定位置插入元素。
-注意：这些操作会修改原列表。
-
-```py
-  my_list = [1, 2, 3]
-  my_list.append(4)  # [1, 2, 3, 4]
-  my_list.insert(1, 'a')  # [1, 'a', 2, 3, 4]
-
-```
-
-删除元素:
-使用 remove() 删除第一个匹配的元素。
-使用 pop() 删除并返回指定位置的元素。
-注意：如果元素不存在，remove() 会引发错误。
-
-```py
-my_list.remove('a')  # [1, 2, 3, 4]
-popped_element = my_list.pop(2)  # my_list 为 [1, 2, 4], popped_element 为 3
-
-```
-
-切片和索引:
-通过索引访问、切片和修改元素。
-注意：索引超出范围会引发错误。
-
-```py
-element = my_list[0]  # 1
-sub_list = my_list[1:3]  # [2, 4]
-
-```
-
-元组（Tuples）
-元组是不可变的，适合用于表示不应该改变的数据集。
-
-- 类型: tuple
-- 描述: 类似于列表，但是不可变。
-- 使用场景: 用于存储不应该改变的数据，如函数返回多个值。
-- 注意事项: 一旦创建，元素不能更改。
-
-```py
-  dimensions = (1920, 1080)
-  coordinates = (0, 0)
-
-  # 例子：返回多个值
-  # 假设你正在构建一个游戏，需要一个函数来返回玩家的坐标和分数。因为这些值是相关联的，所以最好将它们组合成一个元组，而不是分别返回。
-  def get_player_info():
-    x = 0
-    y = 0
-    score = 0
-    return (x, y, score)
-
-  # 例子：地理坐标系统
-  # 在一个地图应用中，你需要存储地理位置的坐标。这些坐标一旦设定，就不应该更改。
-  location = (40.7128, -74.0060)  # 纽约市的坐标
-  # location[0] = 41.2033  # 这将引发错误，因为元组是不可变的
-
-```
-
-**常见操作**
-
-访问元素:
-通过索引访问元素。
-注意：元组是不可变的，不能修改元素。
-
-```py
-my_tuple = (1, 2, 3)
-element = my_tuple[0]  # 1
-
-```
-
-拼接和重复:
-使用 + 拼接元组。
-使用 \* 重复元组。
-注意：这会创建新的元组。
-
-```py
-new_tuple = my_tuple + (4, 5)  # (1, 2, 3, 4, 5)
-repeated_tuple = my_tuple * 2  # (1, 2, 3, 1, 2, 3)
-
-
-```
-
-集合（Sets）
-列表、集合、字典是可变的，它们的内容可以在原地被修改。
-
-- 类型: set
-- 描述: 表示无序且不重复的元素集合。
-- 使用场景: 用于去重、集合运算（并集、交集、差集）。
-- 注意事项: 集合中的元素必须是不可变的（如数字、字符串）。
-
-```py
-  unique_numbers = {1, 2, 3, 4, 5}
-
-  # 例子：邮箱地址簿
-  # 假设你正在处理一个邮箱应用，需要存储用户的联系人地址。为了确保地址列表中没有重复，你需要一个可以自动去除重复项的数据结构。
-  email_addresses = {"alice@example.com", "bob@example.com"}
-  email_addresses.add("alice@example.com")  # 添加重复项，不会有变化
-
-```
-
-**常见操作**
-
-添加和删除元素:
-使用 add() 添加元素。
-使用 remove() 或 discard() 删除元素。
-注意：remove() 不存在的元素会引发错误，discard() 不会。
-
-```py
-my_set = {1, 2, 3}
-my_set.add(4)  # {1, 2, 3, 4}
-my_set.discard(2)  # {1, 3, 4}
-
-
-```
-
-集合运算:
-使用 union(), intersection(), difference() 等方法进行集合运算。
-注意：这些操作不会改变原集合，而是返回一个新集合。
-
-```py
-another_set = {3, 4, 5}
-union_set = my_set.union(another_set)  # {1, 2, 3, 4, 5}
-intersection_set = my_set.intersection(another_set)  # {3, 4}
-
-```
-
-字典（Dictionaries）
-列表、集合、字典是可变的，它们的内容可以在原地被修改。
-
-- 类型: dict
-- 描述: 键值对的集合，每个键映射到一个值。
-- 使用场景: 用于存储相关联的信息，如数据库记录、键值存储等。
-- 注意事项: 键必须是不可变的类型，且唯一。
-
-```py
-  person = {"name": "Alice", "age": 25, "city": "New York"}
-
-  # 例子：用户资料管理
-  # 在用户管理系统中，你需要存储每个用户的多个信息，如姓名、年龄和电子邮件地址。这些信息需要以键值对的形式存储，以便快速访问和更新。
-  user_profile = {"name": "Alice", "age": 30, "email": "alice@example.com"}
-  user_profile["age"] = 31  # 更新年龄
-
-```
-
-**常见操作**
-
-添加和修改键值对:
-直接通过键来添加或修改值。
-注意：键必须是不可变类型。
-
-```py
-my_dict = {'a': 1, 'b': 2}
-my_dict['c'] = 3  # {'a': 1, 'b': 2, 'c': 3}
-my_dict['a'] = 'one'  # {'a': 'one', 'b': 2, 'c': 3}
-
-```
-
-删除键值对:
-使用 pop() 删除特定键的元素。
-使用 del 关键字删除元素。
-注意：删除不存在的键会引发错误。
-
-```py
-value = my_dict.pop('b')  # {'a': 'one', 'c': 3}, value 为 2
-del my_dict['c']  # {'a': 'one'}
-
-```
-
-访问和遍历:
-使用 keys(), values(), items() 遍历字典。
-注意：这些方法返回的是视图对象。
-
-```py
-keys = my_dict.keys()  # dict_keys(['a'])
-for key, value in my_dict.items():
-    print(key, value)  # 输出 'a one'
-
-```
-
-truthy values vs falsy values
-
-Falsy Values（假值）
-在 Python 中，以下值被视为 falsy，即它们在布尔上下文中被评估为 False：
+**Falsy Values（假值）** 在 Python 中，以下值被视为 falsy，即它们在布尔上下文中被评估为 False：
 
 - 布尔值 False。
 - 任何数值类型的零：0, 0.0, 0j（复数）。
 - 空的序列和集合：''（空字符串），()（空元组），[]（空列表），{}（空字典），set()（空集合）。
 - 特殊对象 None。
 
-Truthy Values（真值）
-相对地，除了上述 falsy values 之外，几乎所有其他值都被视为 truthy，即它们在布尔上下文中被评估为 True。
+**Truthy Values（真值）** 相对地，除了上述 falsy values 之外，几乎所有其他值都被视为 truthy，即它们在布尔上下文中被评估为 True。
 
 ```py
-  if not 0:
-      print("0 is falsy")  # 这将被打印
+    if not 0:
+        print("0 is falsy")  # 这将被打印
 
-  if "hello":
-      print("Non-empty string is truthy")  # 这将被打印
+    if "hello":
+        print("Non-empty string is truthy")  # 这将被打印
 
-  if []:
-      print("This won't print")  # 空列表是 falsy
+    if []:
+        print("This won't print")  # 空列表是 falsy
 
-  if [1, 2, 3]:
-      print("Non-empty list is truthy")  # 这将被打印
+    if [1, 2, 3]:
+        print("Non-empty list is truthy")  # 这将被打印
+
+    bool(1)  # True
+    bool(0)  # False
+    bool(3.14)  # True
+    bool("")  # False
+    bool("Hello")  # True
+    bool([])  # False
+    bool([1, 2, 3])  # True
 ```
 
-深拷贝和浅拷贝
+## 复杂数据类型
+
+复杂数据类型（如列表、字典、集合等），当一个变量被赋值给另一个变量时，你实际上是在创建一个对原始对象的引用，而不是创建一个新的、独立的对象副本。这些数据类型是可变的（**mutable**），意味着它们的内容可以在创建后被改变。
+
+列表、集合、字典是可变的，它们的内容可以在原地被修改。
+
+**当你将一个复杂数据类型（如列表、字典、集合等）赋值给另一个变量时，实际上是将引用（即内存地址）赋值给了新变量，而不是复制了其实际内容。这意味着原始数据和新赋值的变量指向内存中的同一个对象。**
+
+```py
+    fruits = ["apple", "banana", "cherry"]
+    fruits_copy = fruits
+
+    fruits_copy.append("orange")
+    print(fruits)  # ['apple', 'banana', 'cherry', 'orange']
+```
+
+### 列表（Lists）
+
+列表（List）是通过动态数组实现的。列表的大小可以根据需要自动增长或缩小。
+
+- 类型: list
+- 描述: 表示有序的元素集合，元素可以是不同类型。
+- 使用场景: 用于存储一系列的项目，如元素集合、数据序列等。
+- 注意事项: 列表是可变的，可以添加、删除或更改元素。
+- 特点：
+  - 动态数组：列表在内部使用动态数组来存储数据。这意味着列表在需要时会自动调整其大小，以容纳更多元素。
+  - 可变性：列表是可变的，允许增加、删除和修改其元素。
+  - 可存储不同类型的元素：列表可以存储不同类型的元素，包括数字、字符串、其他列表等。
+  - 索引和切片：列表支持索引和切片操作，允许直接访问和操作列表的特定部分。
+  - 内存使用：由于其动态数组的特性，列表相比于元组占用更多的内存。
+
+```py
+    numbers = [1, 2, 3, 4, 5]
+    mixed_data = ["text", 10, 3.14]
+
+    # 假设你正在构建一个在线购物平台，需要一个动态的购物车来存储用户选择的商品。因为购物车中的商品数量会根据用户的添加和删除操作变化，所以需要一个可以修改的数据结构。
+    shopping_cart = ["苹果", "香蕉", "牛奶"]
+    shopping_cart.append("面包")  # 添加商品
+    shopping_cart.remove("香蕉")  # 删除商品
+
+
+    =================常见操作=================
+
+    # 在前面插入元素，操作会修改原列表。
+    shopping_cart.insert(0, "鸡蛋")  # ['鸡蛋', '苹果', '牛奶', '面包']
+
+    # 在指定位置插入元素，操作会修改原列表。
+    shopping_cart.insert(1, "饼干")  # ['鸡蛋', '饼干', '苹果', '牛奶', '面包']
+
+    # 追加元素，操作会修改原列表。
+    shopping_cart.append("薯片")  # ['鸡蛋', '饼干', '苹果', '牛奶', '面包', '薯片']
+
+    # 删除第一个匹配的元素，如果元素不存在，remove() 会引发错误。
+    shopping_cart.remove("饼干")  # ['鸡蛋', '苹果', '牛奶', '面包']
+
+    # 删除指定位置的元素
+    shopping_cart.pop(1)  # ['鸡蛋', '牛奶', '面包']
+
+    # 切片，返回新列表
+    shopping_cart[1:3]  # ['牛奶', '面包']
+
+    # 列表长度
+    len(shopping_cart)  # 3
+
+    # 列表排序，根据元素的 ASCII 码排序
+    shopping_cart.sort()  # ['牛奶', '面包', '鸡蛋']
+
+    # 列表反转
+    shopping_cart.reverse()  # ['鸡蛋', '面包', '牛奶']
+
+    # 列表拼接
+    shopping_cart + ["饼干", "薯片"]  # ['鸡蛋', '面包', '牛奶', '饼干', '薯片']
+
+    # 列表重复
+    shopping_cart * 2  # ['鸡蛋', '面包', '牛奶', '鸡蛋', '面包', '牛奶']
+
+    # 列表转字符串
+    str(shopping_cart)  # "['鸡蛋', '面包', '牛奶']"
+
+    # 列表转元组
+    tuple(shopping_cart)  # ('鸡蛋', '面包', '牛奶')
+
+    # 列表转集合
+    set(shopping_cart)  # {'鸡蛋', '面包', '牛奶'}
+
+    # 列表转字典
+    dict(enumerate(shopping_cart))  # {0: '鸡蛋', 1: '面包', 2: '牛奶'}
+
+    # 列表转字符串，使用指定的分隔符
+    ", ".join(shopping_cart)  # "鸡蛋, 面包, 牛奶"
+
+    # 列表去重
+    list(set(shopping_cart))  # ['鸡蛋', '面包', '牛奶']
+
+    # 列表里面有列表
+    nested_list = [[1, 2], [3, 4]]
+
+    # 取第一层的值
+    nested_list[0]  # [1, 2]
+
+    # 取第二层的值
+    nested_list[0][0]  # 1
+
+    # 插入第二层的值
+    nested_list[0].insert(0, 5)  # [[5, 1, 2], [3, 4]]
+
+    # 删除第二层的值
+    nested_list[0].pop(0)  # [[1, 2], [3, 4]]
+```
+
+### 元组（Tuples）
+
+元组是不可变的（`immutable`），适合用于表示不应该改变的数据集。这意味着一旦创建了元组，你就不能修改它的元素，也不能向元组中添加或删除元素。
+
+- 类型: tuple
+- 描述: 类似于列表，但是不可变。
+- 使用场景: 用于存储不应该改变的数据，如函数返回多个值。
+- 注意事项: 一旦创建，元素不能更改。
+- 特点：
+  - 不可变性：元组是不可变的，这意味着一旦创建，你不能修改它的大小或内容。这种不可变性使得元组在某些方面比列表更为高效。
+  - 连续存储：与列表相比，元组通常在内存中以更紧凑的方式存储。由于不需要额外的空间来支持元素的动态添加或移除，元组可以比列表更高效地使用内存。
+  - 可包含不同数据类型：和列表一样，元组可以包含不同的数据类型。
+  - 哈希性：如果元组中的所有元素都是不可变的，则元组本身也是可哈希的。这意味着，例如，一个只包含整数和字符串的元组可以作为字典的键。
+  - 索引和切片操作：元组支持索引和切片操作，这些操作返回元组中的特定部分。
+
+```py
+    dimensions = (1920, 1080)
+    coordinates = (0, 0)
+
+    # 例子：返回多个值
+    # 假设你正在构建一个游戏，需要一个函数来返回玩家的坐标和分数。因为这些值是相关联的，所以最好将它们组合成一个元组，而不是分别返回。
+    def get_player_info():
+        x = 0
+        y = 0
+        score = 0
+        return (x, y, score)
+
+    # 在一个地图应用中，你需要存储地理位置的坐标。这些坐标一旦设定，就不应该更改。
+    location = (40.7128, -74.0060)  # 纽约市的坐标
+    # location[0] = 41.2033  # 这将引发错误，因为元组是不可变的
+
+
+    =================常见操作=================
+
+    # 访问元素
+    x = location[0]  # 40.7128
+
+    # 拼接云组，会返回新的元组
+    new_location = location + (41.2033, 16.5726)  # (40.7128, -74.006, 41.2033, 16.5726)
+
+    # 重复元组，会返回新的元组
+    repeated_location = location * 2  # (40.7128, -74.006, 40.7128, -74.006)
+
+    # 切片，会返回新的元组
+    location[0:2]  # (40.7128, -74.006)
+
+    # 元组长度
+    len(location)  # 2
+
+    # 元素计算
+    count = location.count(40.7128)  # 1
+
+    # 元素索引
+    index = location.index(40.7128)  # 0
+
+    # 元组转列表
+    list(location)  # [40.7128, -74.006]
+
+    # 元组转字符串
+    str(location)  # "(40.7128, -74.006)"
+
+    # 元组转集合
+    set(location)  # {40.7128, -74.006}
+
+    # 元组转字典
+    dict(enumerate(location))  # {0: 40.7128, 1: -74.006}
+
+    # 元组转字符串，使用指定的分隔符
+    ", ".join(location)  # "40.7128, -74.006"
+
+    # 元组去重
+    tuple(set(location))  # (40.7128, -74.006)
+
+    # 元组里面有元组
+    nested_tuple = ((1, 2), (3, 4))
+
+    # 取第一层的值
+    nested_tuple[0]  # (1, 2)
+
+    # 取第二层的值
+    nested_tuple[0][0]  # 1
+
+    # 解包元组
+    x, y = location  # x = 40.7128, y = -74.006
+```
+
+#### 集合（Sets）
+
+在 Python 中，集合（Sets）中的元素必须是不可变的（immutable）。这是因为集合是基于哈希表实现的，所以集合中的每个元素都必须是可哈希的。一个对象是可哈希的，意味着它有一个固定的哈希值在它的整个生命周期内，这通常要求对象是不可变的。
+
+在 Python 中，不可变的基本数据类型（如整数、浮点数、字符串、元组）都是可哈希的，而可变的数据类型（如列表、字典、集合）都是不可哈希的。
+
+- 类型: set
+- 描述: 表示无序且不重复的元素集合。
+- 使用场景: 用于去重、集合运算（并集、交集、差集）。
+- 注意事项: 集合中的元素必须是不可变的（如数字、字符串）。
+- 特点：
+  - 基于哈希表：集合内部使用哈希表（与字典类似）来存储元素。这意味着每个元素都必须是可哈希的，并且集合可以快速地进行添加、删除和查找操作。
+  - 无序：集合是一个无序的集，这意味着不能保证元素的存储或迭代顺序。虽然 Python 3.7 及以后的版本中集合会保留元素的插入顺序，但这并不是一个应该依赖的功能。
+  - 唯一性：集合中的元素是唯一的，集合不允许重复元素。如果尝试添加重复元素，它将被忽略。
+  - 元素的可哈希性：由于集合依赖于哈希表，因此它的元素必须是不可变的（即可哈希的）。这意味着你不能使用列表、字典或其他集合作为集合的元素。
+  - 动态大小：集合的大小不是固定的，可以动态地增加或减少元素。
+  - 优化的成员检查和集合操作：集合提供了高效的成员检查和快速的集合操作，如并集、交集、差集等。
+
+```py
+    unique_numbers = {1, 2, 3, 4, 5}
+
+    # 例子：邮箱地址簿
+    # 假设你正在处理一个邮箱应用，需要存储用户的联系人地址。为了确保地址列表中没有重复，你需要一个可以自动去除重复项的数据结构。
+    email_addresses = {"alice@example.com", "bob@example.com"}
+    email_addresses.add("alice@example.com")  # 添加重复项，不会有变化
+
+
+    =================常见操作=================
+
+    # 创建集合
+    my_set = {1, 2, 3}
+
+    # 添加元素，使用 add() 方法向集合添加元素，如果元素已存在，则不会有变化。
+    my_set.add(4)  # {1, 2, 3, 4}
+
+    # 删除元素，使用 remove() 或 discard() 方法删除元素，如果元素不存在，remove() 会引发错误，discard() 不会。
+    my_set.discard(2)  # {1, 3, 4}
+    my_set.remove(2)  # KeyError: 2
+
+    # 随机删除元素，使用 pop() 方法随机删除一个元素，并返回它。
+    my_set.pop()  # {3, 4}
+
+    # 清空集合
+    my_set.clear()
+
+    # 集合长度
+    len(my_set)  # 0
+
+    # 集合操作，使用 union(), intersection(), difference() 等方法进行集合运算，这些操作不会改变原集合，而是返回一个新集合。
+    my_set = {1, 2, 3}
+    another_set = {3, 4, 5}
+    union_set = my_set.union(another_set)  # {1, 2, 3, 4, 5}
+    intersection_set = my_set.intersection(another_set)  # {3, 4}
+    difference_set = my_set.difference(another_set)  # {1, 2}
+
+    # 集合成员检查，使用 in 关键字检查元素是否存在于集合中。
+    1 in my_set  # True
+    10 in my_set  # False
+
+    # 集合子集检查，使用 issubset() 方法检查一个集合是否是另一个集合的子集。
+    my_set.issubset(another_set)  # False
+
+    # 集合超集检查，使用 issuperset() 方法检查一个集合是否是另一个集合的超集。
+    my_set.issuperset(another_set)  # False
+
+    # 集合相等检查，使用 == 运算符检查两个集合是否相等。
+    my_set == another_set  # False
+
+    # 集合不相等检查，使用 != 运算符检查两个集合是否不相等。
+    my_set != another_set  # True
+
+    # 集合不相交检查，使用 isdisjoint() 方法检查两个集合是否不相交。
+    my_set.isdisjoint(another_set)  # False
+
+    # 集合转列表
+    list(my_set)  # [1, 2, 3]
+
+    # 集合转元组
+    tuple(my_set)  # (1, 2, 3)
+
+    # 集合转字符串
+    str(my_set)  # "{1, 2, 3}"
+
+    # 集合转字典
+    dict(enumerate(my_set))  # {0: 1, 1: 2, 2: 3}
+
+    # 集合转字符串，使用指定的分隔符
+    ", ".join(my_set)  # "1, 2, 3"
+```
+
+### 字典（Dictionaries）
+
+字典（Dictionaries）是通过哈希表实现的。在 Python 中，字典的键（key）必须是不可变的（immutable），如字符串、数字或元组。字典的值（value）可以是任何类型的对象。
+
+- 类型: dict
+- 描述: 键值对的集合，每个键映射到一个值。
+- 使用场景: 用于存储相关联的信息，如数据库记录、键值存储等。
+- 注意事项: 键必须是不可变的类型，且唯一。
+- 特点：
+  - 基于哈希表：字典在内部使用哈希表（或称为散列表）来存储键值对。每个键通过哈希函数映射到哈希表中的一个位置，这允许快速访问特定键的值。
+  - 键值对结构：字典存储数据为键值对，每个键映射到一个值。键必须是唯一的，而且是不可变的（即可哈希的），但值不受限制。
+  - 无序：在 Python 3.6 之前，字典是无序的。从 Python 3.7 开始，字典保持插入顺序，这意味着当你遍历字典时，项将按照它们被添加的顺序返回。
+  - 动态大小：字典的大小是动态的，可以根据需要增长或缩减。可以在运行时添加或删除键值对。
+  - 快速查找：由于哈希表的实现，字典在查找、插入和删除操作上非常快。这些操作的平均时间复杂度为 O(1)。
+  - 键的不可变性：字典的键必须是不可变类型，如字符串、数字或元组。这是因为哈希值需要在整个生命周期内保持不变。如果键是可变的，则在其内容改变后，可能找不到原来的键值对。
+
+```py
+    person = {"name": "Alice", "age": 25, "city": "New York"}
+
+    # 在用户管理系统中，你需要存储每个用户的多个信息，如姓名、年龄和电子邮件地址。这些信息需要以键值对的形式存储，以便快速访问和更新。
+    user_profile = {"name": "Alice", "age": 30, "email": "alice@example.com"}
+    user_profile["age"] = 31  # 更新年龄
+
+
+    =================常见操作=================
+
+    # 创建字典
+    shopping_cart = {"苹果": 2, "牛奶": 1, "面包": 3}
+
+    # 添加或更新元素，如果键不存在，则添加；如果键已存在，则更新其值。
+    shopping_cart["饼干"] = 4  # {'苹果': 2, '牛奶': 1, '面包': 3, '饼干': 4}
+
+    # 访问元素，使用键来访问字典中的元素。
+    shopping_cart["苹果"]  # 2
+
+    # 删除元素，使用 del 语句或 pop() 方法删除键值对。
+    del shopping_cart["饼干"]  # {'苹果': 2, '牛奶': 1, '面包': 3}
+    shopping_cart.pop("面包")  # {'苹果': 2, '牛奶': 1}
+
+    # 获取所有键，使用 keys() 方法获取字典中的所有键。
+    shopping_cart.keys()  # dict_keys(['苹果', '牛奶'])
+
+    # 获取所有键值对，使用 items() 方法获取字典中的所有键值对。
+    shopping_cart.items()  # dict_items([('苹果', 2), ('牛奶', 1)])
+
+    # 获取所有值，使用 values() 方法获取字典中的所有值。
+    shopping_cart.values()  # dict_values([2, 1])
+
+    # 字典长度
+    len(shopping_cart)  # 2
+
+    # 检查键是否存在，使用 in 关键字检查键是否存在于字典中。
+    "苹果" in shopping_cart  # True
+
+    # 清空字典
+    shopping_cart.clear()
+
+    # 字典拷贝，使用 copy() 方法拷贝字典。
+    shopping_cart.copy()  # {'苹果': 2, '牛奶': 1}
+
+    # 从字典创建字典，使用 fromkeys() 方法从给定的键列表和默认值创建字典。
+    keys = ["苹果", "牛奶"]
+    default_value = 0
+    shopping_cart = dict.fromkeys(keys, default_value)  # {'苹果': 0, '牛奶': 0}
+
+    # 字典合并，使用 update() 方法合并字典。
+    shopping_cart.update({"面包": 3, "饼干": 4})  # {'苹果': 0, '牛奶': 0, '面包': 3, '饼干': 4}
+
+    # 获取字典中的值，使用 get() 方法获取字典中的值，如果键不存在，则返回 None。
+    shopping_cart.get("苹果")  # 0
+
+    # 设置默认值，使用 setdefault() 方法获取字典中的值，如果键不存在，则设置默认值。
+    shopping_cart.setdefault("苹果", 2)  # 0
+
+    # 字典排序，使用 sorted() 字典本身是无序的，但可以对键或值进行排序来生成有序结构（如列表或排序字典）。
+    sorted(shopping_cart)  # ['牛奶', '苹果', '饼干', '面包']
+
+    # 字典转列表
+    list(shopping_cart)  # ['苹果', '牛奶', '面包', '饼干']
+
+    # 字典转元组
+    tuple(shopping_cart)  # ('苹果', '牛奶', '面包', '饼干')
+
+    # 字典转字符串
+    str(shopping_cart)  # "{'苹果': 0, '牛奶': 0, '面包': 3, '饼干': 4}"
+
+    # 字典转集合
+    set(shopping_cart)  # {'苹果', '牛奶', '面包', '饼干'}
+
+    # 字典转字符串，使用指定的分隔符
+    ", ".join(shopping_cart)  # "苹果, 牛奶, 面包, 饼干"
+
+    # 字典去重
+    dict.fromkeys(shopping_cart)  # {'苹果': None, '牛奶': None, '面包': None, '饼干': None}
+
+    # 字典里面有字典
+    nested_dict = {"a": {"b": 1, "c": 2}, "d": {"e": 3, "f": 4}}
+
+    # 取第一层的值
+    nested_dict["a"]  # {'b': 1, 'c': 2}
+
+    # 取第二层的值
+    nested_dict["a"]["b"]  # 1
+```
+
+### 深拷贝和浅拷贝
+
 在处理复杂的可变对象时（如列表或字典中包含列表），需要了解深拷贝（deep copy）和浅拷贝（shallow copy）的概念。
 
-浅拷贝（Shallow Copy）：创建一个新对象，但它包含的是对原始对象内部元素的引用（如果元素是可变对象）。
+#### 浅拷贝（Shallow Copy）
+
+创建一个新对象，但它包含的是对原始对象内部元素的引用（如果元素是可变对象）。
 
 ```py
-  import copy
-  original = [[1, 2, 3], [4, 5, 6]]
-  shallow = copy.copy(original)
-  original[0].append(4)  # 修改 original，shallow 也会看到这个变化
-
+    import copy
+    original = [[1, 2, 3], [4, 5, 6]]
+    shallow = copy.copy(original)
+    original[0].append(4)  # 修改 original，shallow 也会看到这个变化
 ```
 
-深拷贝（Deep Copy）：创建一个新对象，同时递归地拷贝原始对象内部的所有元素（不论它们是否可变）。
+#### 深拷贝（Deep Copy）
+
+创建一个新对象，同时递归地拷贝原始对象内部的所有元素（不论它们是否可变）。
 
 ```py
   deep = copy.deepcopy(original)
   original[0].append(5)  # 修改 original，deep 不会看到这个变化
-
 ```
 
-**类型检查**
+## 类型检查
+
 在 Python 中，一切都是对象，包括基本数据类型如整数、浮点数、字符串等。这意味着即使是这些基本数据类型也有与之关联的类和属性。当你创建一个整数时，你实际上是创建了 `int` 类的一个实例。
 
 在 Python 这样的动态类型语言中，虽然不需要在定义变量时指定其类型，但有时候我们需要在程序运行时检查变量的类型。
 
-- 使用 `type()` 适用于直接检查对象的类型。
+### 使用 `type()`
+
+返回对象的确切类型，而不是考虑继承。这意味着如果你有一个由另一个类派生的类的实例，type() 将返回这个派生类的类型，而不是基类。
 
 ```py
-a = 10
-print(type(a)) # <class 'int'>
+    a = 10
+    print(type(a)) # <class 'int'>
 
-b = "Hello"
-print(type(b)) # <class 'str'>
+    b = "Hello"
+    print(type(b)) # <class 'str'>
 
-c = [1, 2, 3]
-print(type(c)) # <class 'list'>
+    c = [1, 2, 3]
+    print(type(c)) # <class 'list'>
 
-d = {"name": "John", "age": 20}
-print(type(d)) # <class 'dict'>
+    d = {"name": "John", "age": 20}
+    print(type(d)) # <class 'dict'>
 
-e = (1, 2, 3)
-print(type(e)) # <class 'tuple'>
+    e = (1, 2, 3)
+    print(type(e)) # <class 'tuple'>
 
-f = {1, 2, 3}
-print(type(f)) # <class 'set'>
+    f = {1, 2, 3}
+    print(type(f)) # <class 'set'>
 
-g = 3.14
-print(type(g)) # <class 'float'>
+    g = 3.14
+    print(type(g)) # <class 'float'>
 
-h = True
-print(type(h)) # <class 'bool'>
+    h = True
+    print(type(h)) # <class 'bool'>
 
-def function():
-    pass
-print(type(function)) # <class 'function'>
+    def function():
+        pass
+    print(type(function)) # <class 'function'>
 
-# 使用 `type()` 来判断变量的类型，需要将该变量的类型与 str 类型直接进行比较
-text = "Hello World"
-is_string = type(text) == str
-print(is_string) # 如果 text 是一个字符串，将输出 True
+    # 使用 `type()` 来判断变量的类型，需要将该变量的类型与 str 类型直接进行比较
+    text = "Hello World"
+    is_string = type(text) == str
+    print(is_string) # 如果 text 是一个字符串，将输出 True
 ```
 
-- 使用 `isinstance()` 更适合检查一个对象是否是一个给定类或其子类的实例。这个函数在处理继承时特别有用，因为它会考虑到继承层次结构。
+### 使用 `isinstance()`
+
+更适合检查一个对象是否是一个给定类或其子类的实例。这个函数在处理继承时特别有用，因为它会考虑到继承层次结构。
 
 ```py
-a = 10
-print(isinstance(a, int)) # True
+    a = 10
+    print(isinstance(a, int)) # True
 
-b = "Hello"
-print(isinstance(b, str)) # True
+    b = "Hello"
+    print(isinstance(b, str)) # True
 
-c = [1, 2, 3]
-print(isinstance(c, list)) # True
+    c = [1, 2, 3]
+    print(isinstance(c, list)) # True
 
-d = {"name": "John", "age": 20}
-print(isinstance(d, dict)) # True
+    d = {"name": "John", "age": 20}
+    print(isinstance(d, dict)) # True
 
-e = (1, 2, 3)
-print(isinstance(e, tuple)) # True
+    e = (1, 2, 3)
+    print(isinstance(e, tuple)) # True
 
-f = {1, 2, 3}
-print(isinstance(f, set)) # True
+    f = {1, 2, 3}
+    print(isinstance(f, set)) # True
 
-g = 3.14
-print(isinstance(g, float)) # True
+    g = 3.14
+    print(isinstance(g, float)) # True
 
-h = True
-print(isinstance(h, bool)) # True
+    h = True
+    print(isinstance(h, bool)) # True
 
-def function():
-    pass
-print(isinstance(function, function.__class__)) # True
+    def function():
+        pass
+    print(isinstance(function, function.__class__)) # True
 ```
 
-> 基础数据类型也可以使用 `isinstance()` 进行检查。返回值是布尔值 `True` 或 `False`。
-> 在实际编程中，通常更推荐使用 isinstance()，因为它在面向对象编程中更加灵活。
+基础数据类型也可以使用 `isinstance()` 进行检查。返回值是布尔值 `True` 或 `False`。在实际编程中，通常更推荐使用 isinstance()，因为它在面向对象编程中更加灵活。
 
-**隐式/显式类型转换**
+## 隐式/显式类型转换
 
 在 Python 中，类型转换可以是显式的或隐式的。显式类型转换是程序员明确进行的，而隐式类型转换是由 Python 自动进行的。
 
-- 显式类型转换（显式类型转换通常通过调用 Python 内置的函数来实现。）
+### 显式类型转换
+
+显式类型转换通常通过调用 Python 内置的函数来实现。
 
 ```py
-number = int("123") # 字符串到整数
+    number = int("123") # 字符串到整数
 
-number = float("3.14") # 字符串到浮点数
+    number = float("3.14") # 字符串到浮点数
 
-text = str(123) # 整数到字符串
+    text = str(123) # 整数到字符串
 
-my_list = list("Hello") # 字符串到列表，结果是 ['H', 'e', 'l', 'l', 'o']
+    my_list = list("Hello") # 字符串到列表，结果是 ['H', 'e', 'l', 'l', 'o']
 
-my_tuple = tuple([1, 2, 3]) # 列表到元组，结果是 (1, 2, 3)
+    my_tuple = tuple([1, 2, 3]) # 列表到元组，结果是 (1, 2, 3)
 
-my_set = set([1, 2, 3]) # 列表到集合，结果是 {1, 2, 3}
+    my_set = set([1, 2, 3]) # 列表到集合，结果是 {1, 2, 3}
 
-my_dict = dict([("name", "John"), ("age", 20)]) # 列表到字典，结果是 {"name": "John", "age": 20}
+    my_dict = dict([("name", "John"), ("age", 20)]) # 列表到字典，结果是 {"name": "John", "age": 20}
 
-boolean = bool(1) # 任何非零数到布尔值，结果是 True
+    boolean = bool(1) # 任何非零数到布尔值，结果是 True
 ```
 
-- 隐式类型转换（隐式类型转换是由 Python 自动进行的，不需要程序员的干预。这通常发生在 Python 需要自动协调两种不同类型的数据时。）
+### 隐式类型转换
 
-**算术运算中的类型提升**
+隐式类型转换是由 Python 自动进行的，不需要程序员的干预。这通常发生在 Python 需要自动协调两种不同类型的数据时。
+
+#### 算术运算中的类型提升
+
 当对不同类型的数字进行算术运算时，Python 会自动将较“小”的类型（如整数）转换为较“大”的类型（如浮点数）。
 
 ```py
-result = 3 + 2.5  # 整数和浮点数的加法，3自动转换为浮点数
+    result = 3 + 2.5  # 整数和浮点数的加法，3自动转换为浮点数
 ```
 
-**布尔运算**
+#### 布尔运算
+
 在布尔上下文中（如 if 语句），非布尔类型的值会被隐式转换为布尔值。
 
 ```py
-if "hello":  # 字符串在布尔上下文中隐式转换为 True
-    print("String is truthy")
+    if "hello":  # 字符串在布尔上下文中隐式转换为 True
+        print("String is truthy")
 ```
 
-**字符串连接**
+#### 字符串连接
+
 当使用加号（+）将字符串和非字符串值连接时，非字符串值会被隐式转换为字符串（这种做法通常不推荐，因为可能会引起错误）。
 
 ```py
-greeting = "Hello, " + str(123)  # 数字123被显式转换为字符串
+    greeting = "Hello, " + str(123)  # 数字123被显式转换为字符串
 
-# 这种做法通常不推荐，因为可能会引起错误
-result = 3 + 2.5
-print(result)  # 输出 5.5
-# 3 被隐式转换为浮点数 3.0，然后与 2.5 相加
+    # 这种做法通常不推荐，因为可能会引起错误
+    result = 3 + 2.5
+    print(result)  # 输出 5.5
+    # 3 被隐式转换为浮点数 3.0，然后与 2.5 相加
 ```
 
-**隐式类型转换的情况，包括那些可能导致错误或混淆的场景。**
+#### 隐式类型转换的情况，包括那些可能导致错误或混淆的场景
 
 - 数值运算中的隐式类型转换
 
 ```py
-# 整数与浮点数的运算：
-result = 3 + 2.5
-print(result)  # 输出 5.5
-# 3 被隐式转换为浮点数 3.0，然后与 2.5 相加
+    # 整数与浮点数的运算：
+    result = 3 + 2.5
+    print(result)  # 输出 5.5
+    # 3 被隐式转换为浮点数 3.0，然后与 2.5 相加
 
-# 布尔值与数字的运算：
-result = True + 5
-print(result)  # 输出 6
-# True 被隐式转换为 1
+    # 布尔值与数字的运算：
+    result = True + 5
+    print(result)  # 输出 6
+    # True 被隐式转换为 1
 ```
 
 - 逻辑运算中的隐式类型转换
 
 ```py
-# 布尔上下文中的非布尔值：
-if "hello":
-    print("Non-empty string is truthy")
-# 非空字符串在布尔上下文中被隐式视为 True
+    # 布尔上下文中的非布尔值：
+    if "hello":
+        print("Non-empty string is truthy")
+    # 非空字符串在布尔上下文中被隐式视为 True
 
-# 空列表在布尔上下文中的转换：
-if []:
-    print("This won't print")
-else:
-    print("Empty list is falsy")
-# 空列表 [] 被隐式视为 False
+    # 空列表在布尔上下文中的转换：
+    if []:
+        print("This won't print")
+    else:
+        print("Empty list is falsy")
+    # 空列表 [] 被隐式视为 False
 ```
 
 - 字符串连接中的隐式转换
 
 ```py
-# 字符串与数值的连接（不推荐，易引起错误）：
-# 这将引发错误，因为无法将整数直接与字符串相连
-# text = "The number is " + 5
+    # 字符串与数值的连接（不推荐，易引起错误）：
+    # 这将引发错误，因为无法将整数直接与字符串相连
+    # text = "The number is " + 5
 
-# 正确的做法是显式转换
-text = "The number is " + str(5)
-print(text)  # 输出 "The number is 5"
+    # 正确的做法是显式转换
+    text = "The number is " + str(5)
+    print(text)  # 输出 "The number is 5"
 ```
 
 - 潜在的混淆或错误
 
 ```py
-# 不同类型的比较：
-# 尽管这在Python中是合法的，但可能导致混淆
-result = "5" == 5
-print(result)  # 输出 False
-# 字符串 "5" 和整数 5 不是相同的
+    # 不同类型的比较：
+    # 尽管这在Python中是合法的，但可能导致混淆
+    result = "5" == 5
+    print(result)  # 输出 False
+    # 字符串 "5" 和整数 5 不是相同的
 
-# 列表加法与整数（不合法，会引发错误）：
-# 这将引发TypeError，因为列表和整数无法相加
-# result = [1, 2, 3] + 5
+    # 列表加法与整数（不合法，会引发错误）：
+    # 这将引发TypeError，因为列表和整数无法相加
+    # result = [1, 2, 3] + 5
 ```
 
 **变量的作用域**
